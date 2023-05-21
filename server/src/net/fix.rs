@@ -1,7 +1,5 @@
 use std::fmt;
 
-use chrono::{DateTime, Utc};
-
 use crate::core::order_book::{self, Order};
 use crate::net::fix;
 
@@ -99,7 +97,7 @@ pub enum MessageField {
     Price(f64),
     Status(OrderStatus),
     VolumeAtLimit(f64),
-    Trades([(u64, f64, DateTime<Utc>); 10]),
+    Trades(Vec<(u64, f64, std::string::String)>),
     Book([OrderData; 10], [OrderData; 10]),
     MarketPrice(bool),
     MarketTrades(bool),

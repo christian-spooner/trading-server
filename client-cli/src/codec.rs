@@ -13,7 +13,7 @@
 12: reason
 */
 
-use chrono::{DateTime, Utc};
+use time::OffsetDateTime;
 
 use crate::fix::*;
 
@@ -133,19 +133,20 @@ pub fn decode_message(data: &str) -> Option<FixMessage> {
             }),
             "6" => MessageField::VolumeAtLimit(value.parse::<f64>().ok()?),
             "7" => {
-                let trades: [(u64, f64, DateTime<Utc>); 10] = {
-                    let mut trades_array: [(u64, f64, DateTime<Utc>); 10] = Default::default();
-                    for (i, trade_str) in value.split(',').rev().take(10).enumerate() {
-                        let trade_parts: Vec<&str> = trade_str.split('@').collect();
-                        let quantity = trade_parts[0].parse::<u64>().ok()?;
-                        let price = trade_parts[1].parse::<f64>().ok()?;
-                        let datetime = Utc::now();
-                        trades_array[i] = (quantity, price, datetime);
-                    }
-                    trades_array
-                };
-                MessageField::Trades(trades)
-            }
+                let mut trades: Vec<(u64, f64, OffsetDateTime)> = Vec::new();
+                for trade_str in value.split(',').rev().take(10) {
+                    let trade_parts: Vec<&str> = trade_str.split('@').collect();
+                    let quantity = trade_parts[0].parse::<u64>().ok()?;
+                    let price = trade_parts[1].parse::<f64>().ok()?;
+                    let datetime = OffsetDateTime::now_utc();
+                    trades.push((quantity, price, datetime));
+                }
+                while trades.len() < 10 {
+                    trades.push((0, 0.0, OffsetDateTime::now_utc()));
+                }
+                let trades_array: [(u64, f64, OffsetDateTime); 10] = trades.try_into().unwrap();
+                MessageField::Trades(trades_array)
+            }       
             "8" => {
                 let book_parts: Vec<&str> = value.split(':').collect();
                 if book_parts.len() != 2 {

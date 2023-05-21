@@ -5,7 +5,11 @@ interface Props {
 }
 
 const formatTradeTime = (timestamp: string) => {
-    return timestamp.split("T")[1].split(".")[0]
+    let time = timestamp.split("T")[1].split(".")[0]
+    if (time.endsWith("Z")) {
+        time = time.slice(0, -1)
+    }
+    return time
 }
 
 const Trades: React.FC<Props> = ({ trades }) => {

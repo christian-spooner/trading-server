@@ -1,13 +1,13 @@
 use crate::net::fix::OrderStatus;
 
 use super::order_book::{Order, OrderBook, Side};
-use chrono::{DateTime, Utc};
+use time::OffsetDateTime;
 
 pub struct Engine<T: OrderBook> {
     pub book: T,
     pub id: u64,
     pub history: Vec<u64>,
-    pub trade_history: Vec<(u64, f64, DateTime<Utc>)>,
+    pub trade_history: Vec<(u64, f64, OffsetDateTime)>,
 }
 
 impl<T: OrderBook> Engine<T> {
@@ -76,7 +76,7 @@ impl<T: OrderBook> Engine<T> {
             Ok((bid_id, ask_id, quantity, price)) => {
                 self.history.push(bid_id);
                 self.history.push(ask_id);
-                self.trade_history.push((quantity, price, Utc::now()));
+                self.trade_history.push((quantity, price, OffsetDateTime::now_utc()));
                 Ok((quantity, price))
             }
             Err(e) => Err(e),
@@ -141,13 +141,21 @@ impl<T: OrderBook> Engine<T> {
         self.book.get_market_price()
     }
 
-    pub fn get_trade_history(&self) -> [(u64, f64, DateTime<Utc>); 10] {
+    pub fn get_trade_history(&self) -> Vec<(u64, f64, String)> {
         let n = self.trade_history.len();
         let m = std::cmp::min(10, n);
-        let mut array: [(u64, f64, DateTime<Utc>); 10] = Default::default();
+    
+        let mut trades_vec: Vec<(u64, f64, String)> = Vec::with_capacity(10);
+        
         for i in 0..m {
-            array[i] = self.trade_history[n - 1 - i].clone();
+            let (quantity, price, datetime) = self.trade_history[n - 1 - i].clone();
+            trades_vec.push((quantity, price, datetime.format("%Y-%m-%dT%H:%M:%SZ").to_string()));
         }
-        array
+    
+        while trades_vec.len() < 10 {
+            trades_vec.push((0, 0.0, "".to_string()));
+        }
+        
+        trades_vec
     }
 }

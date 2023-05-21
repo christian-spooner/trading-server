@@ -22,19 +22,18 @@ Open positions
 Leverage, margin
 Stop loss, risk tools
 Market order, limit order
+Positions time single digit
 Candlestick chart
-Spot vs futures
 Price: volume, kline
 Book: price
-Eslint
 
 Server:
 Multiasset
 Benchmarking
 Doctests
+Missing id
 Engine get volume
 Vector deduplication
-Missing id bug
 Market data feed handlers
 Client sessions
 Execution status not found

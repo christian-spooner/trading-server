@@ -1,6 +1,6 @@
 use std::fmt;
 
-use chrono::{DateTime, Utc};
+use time::OffsetDateTime;
 
 #[allow(dead_code)]
 #[derive(Debug, PartialEq)]
@@ -76,7 +76,7 @@ pub enum MessageField {
     Price(f64),
     Status(OrderStatus),
     VolumeAtLimit(f64),
-    Trades([(u64, f64, DateTime<Utc>); 10]),
+    Trades([(u64, f64, OffsetDateTime); 10]),
     Book([OrderData; 10], [OrderData; 10]),
     MarketPrice(bool),
     MarketTrades(bool),

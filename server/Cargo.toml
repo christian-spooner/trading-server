@@ -6,13 +6,9 @@ edition = "2021"
 [dependencies]
 tokio = { version = "*", features = ["full"] }
 serde = { version = "*", features = ["derive"] }
-bincode = "*"
-tokio-util = "*"
 axum = "*"
 serde_json = "*"
-hyper = { version = "*", features = ["full"] }
-tower = "*"
 tower-http = { version = "*", features = ["cors"] }
 futures = "*"
-chrono = { version = "^0.4.1", features = ["serde", "rustc-serialize"] }
+time = "^0.2.23"
 array-init = "*"
