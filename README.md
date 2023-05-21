@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="1638" alt="trading client screenshot" src="https://github.com/christian-spooner/trading-server/assets/93479191/6094faa3-2248-45ce-85fc-149c71664bdb">
+  <img width="1638" alt="trading client screenshot" src="https://github.com/christian-spooner/trading-server/assets/93479191/6e35ead6-0ea4-4fb2-9007-1cbff0010ec3">
   <br>
   <em>Web-client dashboard: provides market data & ability to send limit orders to local trading server</em>
 </p>
