@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    body {
+        background-color: rgb(10, 10, 10);
+        color: rgb(230, 230, 230);
+    }
+
+    * {
+        background-color: transparent;
+    }
+}

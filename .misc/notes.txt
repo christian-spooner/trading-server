@@ -1,0 +1,133 @@
+################################################################################
+    TODO
+################################################################################
+
+Client-cli:
+Refactor for new protocol
+Partial fill report
+Arg validation
+Fix empty pay load
+Error handling
+Verbose logging
+Get market data
+Multiple clients
+Simulated behaviour
+
+Client-scripts:
+N/A
+
+Client-web:
+Order input validation/restriction
+Open positions
+Leverage, margin
+Stop loss, risk tools
+Market order, limit order
+Candlestick chart
+Spot vs futures
+Price: volume, kline
+Book: price
+Eslint
+
+Server:
+Multiasset
+Benchmarking
+Doctests
+Engine get volume
+Vector deduplication
+Missing id bug
+Market data feed handlers
+Client sessions
+Execution status not found
+Order response unwrap
+Order status return type
+
+################################################################################
+    INFO DUMP
+################################################################################
+
+What is an order book?
+An order book is a list of all buy and sell orders for a particular security.
+
+Any given order contains the following information
+    Buy or sell
+    Price
+    Quantity
+
+Order types
+    Market
+        Processed immediately at the current market price.
+    Limit
+        Processed only at the submitted limit price (or lower/higer for buy/sell)
+    Stop-loss
+        Triggers an immediate buy/sell when a given short/long position is losing money
+    Trailing stop
+        Stop-loss placed at a specific amount/percentage above/below most recent high/low
+    (IOC, GTD, Stop)
+
+Feature requirements
+    Add – O(log M) for the first order at a particular limit, O(1) for all others
+    Cancel – O(1)
+    Execute – O(1)
+    GetVolumeAtLimit – O(1)
+    GetBestBid/Offer – O(1)
+M: number of price limits
+N: number of orders
+
+Binary tree of Limit objects sorted by limitPrice, each of which is itself a doubly linked list of Order objects
+    Order
+        int idNumber
+        bool buyOrSell
+        int shares
+        int limit
+        int entryTime
+        int eventTime
+        Order *nextOrder
+        Order *prevOrder
+        Limit *parentLimit
+
+    Limit  # single limit price
+        int limitPrice
+        int size
+        int totalVolume
+        Limit *parent
+        Limit *leftChild
+        Limit *rightChild
+        Order *headOrder
+        Order *tailOrder
+
+    Book
+        Limit *buyTree
+        Limit *sellTree
+        Limit *lowestSell
+        Limit *highestBuy
+
+Matching algorithms
+    FIFO
+    Pro-rata
+    LMM
+    Hybrid
+
+Trading inforamtion cycle
+    ->  Electronic exchange -> 
+        Market data feed handlers -> 
+        Limit order book -> 
+        Trading algorithm -> 
+        Order Entry Gateway  ->
+
+Momentum vs reversion
+Pairs trading
+Arbitrage
+
+Critcal components of a client trading system
+    Gateways
+    Book builder
+    Strategies
+    OMS
+Non-critical components
+    Command and control
+    Services
+        Position server
+        Logging system
+        Viewers
+        Control viewers
+        News server

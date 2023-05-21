@@ -1,0 +1,8 @@
+target
+.vscode
+__pycache__
+.*_cache
+.env
+ref
+*.sh
+dist
