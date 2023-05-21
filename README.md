@@ -10,13 +10,15 @@ cd server
 cargo run
 
 cd client-web
-yarn install && yarn dev
+yarn install
+yarn dev
 ```
 
 If you want to quickly send some orders to the server, run
 ```
 cd client-scripts
-pipenv shell && pipenv install
+pipenv shell
+pipenv install
 python init.py
 ```
 
